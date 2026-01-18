@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  waf:
+    build: .
+    container_name: waf_engine
+    command: python waf_proxy.py
+    ports:
+      - "8000:8000"
+    environment:
+      - TARGET_SERVER=http://victim:80
+      - DB_PATH=/data/waf_data.db
+      - MODE=production 
+    volumes:
+      - ./waf_data:/data
+    depends_on:
+      - victim
+      - admin
+
+  admin:
+    build: .
+    container_name: waf_admin
+    command: python admin_panel/app.py
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_PATH=/data/waf_data.db
+    volumes:
+      - ./waf_data:/data
+
+  victim:
+    build: .
+    container_name: victim_app
+    command: python victim.py
+    expose:
+      - "80"  # тольо внутри Docker!!!!!!!!!!!!

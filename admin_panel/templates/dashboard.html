@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WAF SOC Panel</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .danger { color: red; }
+        .warning { color: orange; }
+        .safe { color: green; }
+    </style>
+</head>
+<body>
+    <h1>WAF Security Operations Center</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>IP</th>
+                <th>Method/Path</th>
+                <th>Reason</th>
+                <th>AI Confidence</th>
+                <th>SOC Verdict</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.timestamp }}</td>
+                <td>{{ log.src_ip }}</td>
+                <td>{{ log.method }} {{ log.path }}</td>
+                <td class="{{ 'danger' if 'block' in log.status else 'warning' }}">
+                    {{ log.status }}
+                </td>
+                <td>{{ log.ml_confidence }}</td>
+                <td>{{ log.soc_verdict or 'Pending' }}</td>
+                <td>
+                    {% if not log.soc_verdict %}
+                    <a href="/action/{{ log.id }}/allow">[Allow]</a>
+                    <a href="/action/{{ log.id }}/ban_ip" style="color:red;">[Ban IP]</a>
+                    {% else %}
+                    Done
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
