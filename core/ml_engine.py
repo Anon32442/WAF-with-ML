@@ -97,4 +97,5 @@ def neural_network_analyze(payload, signature_triggered=False):
         return True, 1.0
 
 
+
 load_or_train_model()

@@ -85,5 +85,6 @@ def train():
     joblib.dump(model, MODEL_PATH)
     print(f"Model saved to {MODEL_PATH}")
 
+
 if __name__ == "__main__":
     train()

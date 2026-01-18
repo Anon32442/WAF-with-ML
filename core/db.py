@@ -5,6 +5,7 @@ from datetime import datetime
 
 Base = declarative_base()
 
+
 class RequestLog(Base):
     __tablename__ = 'request_logs'
     id = Column(Integer, primary_key=True)

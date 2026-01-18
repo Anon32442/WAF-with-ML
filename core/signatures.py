@@ -7,6 +7,7 @@ ATTACK_PATTERNS = [
     r"(?i)alert\(",
 ]
 
+
 def check_signatures(payload: str) -> bool:
     if not payload: return False
     for pattern in ATTACK_PATTERNS:
